@@ -1,7 +1,7 @@
 import {ChangeEvent, useEffect, useState} from "react";
 import {OptionType} from "../types";
 
-export const useForecast=()=>{
+export const useForecast = () => {
     const [term, setTerm] = useState<string>("")
     const [options, setOptions] = useState<[]>([])
     const [city, setCity] = useState<OptionType | null>(null)
@@ -22,10 +22,12 @@ export const useForecast=()=>{
     }
 
     const getForecast = (city: OptionType) => {
-        fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${city.lat}&lon=${city.lon}&units=metric&appid=${
+        fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${city.lat}&lon=${city.lon}&units=metric&appid=${
             process.env.REACT_APP_API_KEY
-        }`).then(res => res.json()).then(data => setForecast(data))
-    }
+        }`).then(res => res.json()).then(data => {
+                const forecastData = {...data, city, list: data.list.slice(0, 16)}
+                setForecast(forecastData)
+            })}
 
     const onSubmit = () => {
         if (!city) return
@@ -46,7 +48,7 @@ export const useForecast=()=>{
         }
     }, [city])
 
-    return{
+    return {
         term, options, forecast, onInputChange, onOptionSelect, onSubmit
     }
 }
