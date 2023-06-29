@@ -11,6 +11,7 @@ type SearchType = {
 
 const Search = ({term, options, onInputChange, onOptionSelect, onSubmit}: SearchType) => {
 
+
     return (
         <main
             className="flex justify-center items-center bg-gradient-to-br from-sky-400 via-rose-400 to-lime-400 h-[100vh] w-full">
@@ -33,7 +34,7 @@ const Search = ({term, options, onInputChange, onOptionSelect, onSubmit}: Search
                                     className={"text-left text-sm w-full hover:bg-zinc-700 hover:text-white px-2 py-1 cursor-pointer"}
                                     onClick={() => onOptionSelect(op)}
                                 >
-                                    {op.name}
+                                    {op.name}, {op.country}
                                 </button>
                             </li>
                         ))}

@@ -2,7 +2,8 @@ import React from 'react';
 import {ForecastType} from "../types";
 import Sunset from "./Icons/Sunset";
 import Sunrise from "./Icons/Sunrise";
-import {getSunTime} from "../helpers";
+import {getHumidityValue, getPop, getSunTime, getVisibilityValue, getWindDirection} from "../helpers";
+import Tile from './Tile';
 
 type ForecastProps = {
     data: ForecastType
@@ -14,10 +15,8 @@ const Degree = ({temp}: { temp: number }) => (
     </span>
 )
 const Forecast = ({data}: ForecastProps) => {
-    console.log(data.city, data.city.sunset);
 
     const today = data.list[0]
-
 
     return (
         <div
@@ -55,13 +54,61 @@ const Forecast = ({data}: ForecastProps) => {
                         </div>
                     ))}
                 </section>
-                <section className={"flex justify-between text-zinc-700"}>
-                  <div className={"w-[140px] text-xs font-bold flex flex-col items-center bg-white/20 backdrop-blur-lg rounded drop-shadow-lg py-4 mb-5"}>
-                        <Sunrise/> <span className={"mt-2"}>{getSunTime(1688007320)}</span>
-                  </div>
-                  <div className={"w-[140px] text-xs font-bold flex flex-col items-center bg-white/20 backdrop-blur-lg rounded drop-shadow-lg py-4 mb-5"}>
-                      <Sunset/><span className={"mt-2"}>{getSunTime(data.city.sunset)}</span>
-                  </div>
+                <section className={"flex flex-wrap justify-between text-zinc-700"}>
+                    <div
+                        className={"w-[140px] text-xs font-bold flex flex-col items-center bg-white/20 backdrop-blur-lg rounded drop-shadow-lg py-4 mb-5"}>
+                        <Sunrise/> <span className={"mt-2"}>{getSunTime(data.city.sunrise)}</span>
+                    </div>
+                    <div
+                        className={"w-[140px] text-xs font-bold flex flex-col items-center bg-white/20 backdrop-blur-lg rounded drop-shadow-lg py-4 mb-5"}>
+                        <Sunset/><span className={"mt-2"}>{getSunTime(data.city.sunset)}</span>
+                    </div>
+                    {/*wind*/}
+                    <Tile
+                        icon={"wind"}
+                        title={"Wind"}
+                        info={`${Math.round(today.wind.speed)} km/h`}
+                        description={`${getWindDirection(Math.round(today.wind.deg))}, gusts ${today.wind.gust.toFixed(1)} km/h`}
+                    />
+                    {/*feels like*/}
+                    <Tile
+                        title={"Feels like"}
+                        icon={"feels"}
+                        info={<Degree temp={Math.round(today.main.feels_like)}/>}
+                        description={`Feels ${
+                            Math.round(today.main.feels_like) < Math.round(today.main.temp)
+                                ? "colder"
+                                : "warmer"
+                        }`}
+                    />
+                    {/*humidity*/}
+                    <Tile
+                        icon={"humidity"}
+                        title={"Humidity"}
+                        info={`${today.main.humidity}%`}
+                        description={getHumidityValue(today.main.humidity)}
+                    />
+                    {/*pop*/}
+                    <Tile
+                        icon={"pop"}
+                        title={"Precipitation"}
+                        info={`${Math.round(today.pop * 1000)}%`}
+                        description={`${getPop(today.pop )}, clouds at ${today.clouds.all}`}
+                    />
+                    {/*pressure*/}
+                    <Tile
+                        icon={"pressure"}
+                        title={"Pressure"}
+                        info={`${Math.round(today.main.pressure)}hPa`}
+                        description={`${Math.round(today.main.pressure) < 1013 ? "Lower" : "Higher"} than standard`}
+                    />
+                    {/*visibility*/}
+                    <Tile
+                        icon={"visibility"}
+                        title={"Visibility"}
+                        info={`${(today.visibility / 1000).toFixed()}km`}
+                        description={getVisibilityValue(today.visibility)}
+                    />
                 </section>
             </div>
         </div>
