@@ -1,5 +1,8 @@
 import React from 'react';
 import {ForecastType} from "../types";
+import Sunset from "./Icons/Sunset";
+import Sunrise from "./Icons/Sunrise";
+import {getSunTime} from "../helpers";
 
 type ForecastProps = {
     data: ForecastType
@@ -10,10 +13,11 @@ const Degree = ({temp}: { temp: number }) => (
         {temp}<sup>o</sup>
     </span>
 )
-
 const Forecast = ({data}: ForecastProps) => {
+    console.log(data.city, data.city.sunset);
 
     const today = data.list[0]
+
 
     return (
         <div
@@ -51,12 +55,13 @@ const Forecast = ({data}: ForecastProps) => {
                         </div>
                     ))}
                 </section>
-                <section>
-                    <div className={""}>
-                        <div>
-
-                        </div>
-                    </div>
+                <section className={"flex justify-between text-zinc-700"}>
+                  <div className={"w-[140px] text-xs font-bold flex flex-col items-center bg-white/20 backdrop-blur-lg rounded drop-shadow-lg py-4 mb-5"}>
+                        <Sunrise/> <span className={"mt-2"}>{getSunTime(1688007320)}</span>
+                  </div>
+                  <div className={"w-[140px] text-xs font-bold flex flex-col items-center bg-white/20 backdrop-blur-lg rounded drop-shadow-lg py-4 mb-5"}>
+                      <Sunset/><span className={"mt-2"}>{getSunTime(data.city.sunset)}</span>
+                  </div>
                 </section>
             </div>
         </div>

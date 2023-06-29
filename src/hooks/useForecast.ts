@@ -25,7 +25,8 @@ export const useForecast = () => {
         fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${city.lat}&lon=${city.lon}&units=metric&appid=${
             process.env.REACT_APP_API_KEY
         }`).then(res => res.json()).then(data => {
-                const forecastData = {...data, city, list: data.list.slice(0, 16)}
+
+                const forecastData = {...data, list: data.list.slice(0, 16)}
                 setForecast(forecastData)
             })}
 
@@ -37,8 +38,6 @@ export const useForecast = () => {
 
     const onOptionSelect = (op: OptionType) => {
         setCity(op)
-
-
     }
 
     useEffect(() => {

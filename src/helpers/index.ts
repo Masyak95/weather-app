@@ -29,15 +29,11 @@ export const getVisibilityValue = (number: number): string => {
   return 'Very clear day'
 }
 
-export const getSunTime = (timestamp: number): string => {
-  const date = new Date(timestamp * 1000)
-  let hours = date.getHours().toString()
-  let minutes = date.getMinutes().toString()
-
-  if (hours.length <= 1) hours = `0${hours}`
-  if (minutes.length <= 1) minutes = `0${minutes}`
-
-  return `${hours}:${minutes}`
+export function getSunTime(timestamp: number) {
+  const date = new Date(timestamp * 1000); // Умножаем на 1000, так как JavaScript ожидает время в миллисекундах
+  const hours = date.getHours().toString().padStart(2, '0'); // Получаем часы и приводим к строке с ведущим нулем при необходимости
+  const minutes = date.getMinutes().toString().padStart(2, '0'); // Получаем минуты и приводим к строке с ведущим нулем при необходимости
+  return `${hours}:${minutes}`;
 }
 
 export const getPop = (value: number): string => {
