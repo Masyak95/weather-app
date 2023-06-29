@@ -5,10 +5,13 @@ export type OptionType = {
 }
 
 export type ForecastType = {
-    name: string
-    country: string
-    sunrise: number
-    sunset: number
+    city:{
+        name: string
+        country: string
+        sunrise: number
+        sunset: number
+    }
+
     list: [{
         dt: number
         main: {
